@@ -1,6 +1,18 @@
+import { io } from "socket.io-client"
+
 function App() {
+  const socket = io("http://localhost:3000/")
+
   return (
-    <h1>H1</h1>
+    <div>
+      <form onSubmit={(event) => {
+        event.preventDefault()
+        socket.emit("message", event.target.input.value)
+      }}>
+        <input name="input"></input>
+        <button type="submit">send</button>
+      </form>
+    </div>
   )
 }
 
