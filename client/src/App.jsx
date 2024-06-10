@@ -1,33 +1,36 @@
 import { io } from "socket.io-client"
 import { useState } from "react"
-import Roomselect from "./components/Roomselect"
+import { useSelector, useDispatch } from "react-redux"
+import Room from "./components/Room"
 
 function App() {
-  const [messages, setMessages] = useState([])
   const [roomState, setRoomState] = useState(false)
+  const dispatch = useDispatch()
   const socket = io("http://localhost:3000/")
-
-  socket.on("message", (msg) => {
-    //setMessages(messages.concat(msg))
-  })
+  
   if(!roomState) {
+    const handleCreate = () => {
+      socket.emit("create")
+      setRoomState(socket.id)
+    }
+
+    const handleSubmit = (event) => {
+      const room = event.target.code.value
+      dispatch(set(room)) // check if room exists first
+    }
+
     return (
-      <Roomselect socket={socket}/>
+      <div>
+        <button onClick={handleCreate}>create room</button>
+        <form onSubmit={handleSubmit}>
+          <input name="code"></input>
+          <button type="submit">join</button>
+        </form>
+      </div>
     )
   } else {
     return (
-      <div>
-        <form onSubmit={(event) => {
-          event.preventDefault()
-          socket.emit("message", event.target.input.value)
-        }}>
-          <input name="input"></input>
-          <button type="submit">send</button>
-        </form>
-        <div>
-          {messages.map((msg) => <p key={msg}>{msg}</p>)}
-        </div>
-      </div>
+      <Room socket={socket}/>
     )
   }
   

@@ -29,6 +29,7 @@ io.on("connection", (socket) => {
     })
     socket.on("create", () => {
         console.log("creating new room")
+        // TODO
     })
     socket.on("disconnect", () => {
         console.log("user disconnected: " + id)
