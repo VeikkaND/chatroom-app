@@ -1,12 +1,15 @@
 import { io } from "socket.io-client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import Room from "./components/Room"
 
 function App() {
   const [roomState, setRoomState] = useState(false)
+  const [socket, setSocket] = useState("")
+  useEffect(()=> {
+    setSocket(io("http://localhost:3000/"))
+  }, [])
   const dispatch = useDispatch()
-  const socket = io("http://localhost:3000/")
   
   if(!roomState) {
     const handleCreate = () => {
