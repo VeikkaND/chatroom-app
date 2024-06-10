@@ -5,7 +5,7 @@ function Room({socket}) {
     const [messages, setMessages] = useState([])
 
     socket.on("message", (msg) => {
-        //setMessages(messages.concat(msg))
+        setMessages(messages.concat(msg))
       })
 
     return(

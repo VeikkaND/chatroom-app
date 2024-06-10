@@ -29,7 +29,19 @@ io.on("connection", (socket) => {
     })
     socket.on("create", () => {
         console.log("creating new room")
+        socket.join(id)
         // TODO
+    })
+    socket.on("join", (room) => {
+        console.log("trying to join room " + room)
+        const rooms = io.of("/").adapter.rooms
+        if(rooms.has(room)) {
+            console.log("joining room " + room)
+            socket.join(room)
+        } else {
+            console.log(`room ${room} not found`)
+        }
+
     })
     socket.on("disconnect", () => {
         console.log("user disconnected: " + id)

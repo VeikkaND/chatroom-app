@@ -19,7 +19,8 @@ function App() {
 
     const handleSubmit = (event) => {
       const room = event.target.code.value
-      dispatch(set(room)) // check if room exists first
+      socket.emit("join", room)
+      //dispatch(set(room)) // check if room exists first
     }
 
     return (
