@@ -1,6 +1,7 @@
 import { io } from "socket.io-client"
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
+import { set } from "./reducers/roomReducer"
 import Room from "./components/Room"
 
 function App() {
@@ -17,10 +18,17 @@ function App() {
       setRoomState(socket.id)
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
+      event.preventDefault()
       const room = event.target.code.value
-      socket.emit("join", room)
-      //dispatch(set(room)) // check if room exists first
+      const res = await socket.emitWithAck("join", room)
+      if(res) {
+        dispatch(set(room))
+        console.log(`joining room ${room}`)
+        setRoomState(room)
+      } else {
+        console.log(`room ${room} not found`)
+      }
     }
 
     return (

@@ -32,14 +32,16 @@ io.on("connection", (socket) => {
         socket.join(id)
         // TODO
     })
-    socket.on("join", (room) => {
+    socket.on("join", (room, callback) => {
         console.log("trying to join room " + room)
         const rooms = io.of("/").adapter.rooms
         if(rooms.has(room)) {
             console.log("joining room " + room)
             socket.join(room)
+            callback(true)
         } else {
             console.log(`room ${room} not found`)
+            callback(false)
         }
 
     })
