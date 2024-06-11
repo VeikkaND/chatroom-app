@@ -24,8 +24,9 @@ io.on("connection", (socket) => {
     const id = socket.id
     console.log("user connected: " + id)
     socket.on("message", (msg) => {
-        console.log(`(${id}) message: ` + msg)
-        io.emit("message", msg)
+        console.log(`(${id}) message: ` + msg.message)
+        console.log(msg.room)
+        io.to(msg.room).emit("message", {room: msg.room, message: msg.message})
     })
     socket.on("create", () => {
         console.log("creating new room")

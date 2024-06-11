@@ -15,6 +15,7 @@ function App() {
   if(!roomState) {
     const handleCreate = () => {
       socket.emit("create")
+      dispatch(set(socket.id))
       setRoomState(socket.id)
     }
 
@@ -42,7 +43,7 @@ function App() {
     )
   } else {
     return (
-      <Room socket={socket}/>
+      <Room socket={socket} room={roomState}/>
     )
   }
   
