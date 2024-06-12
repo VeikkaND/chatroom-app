@@ -26,7 +26,8 @@ io.on("connection", (socket) => {
     socket.on("message", (msg) => {
         console.log(`(${id}) message: ` + msg.message)
         console.log(msg.room)
-        io.to(msg.room).emit("message", {room: msg.room, message: msg.message})
+        io.to(msg.room).emit("message", 
+            {room: msg.room, message: msg.message, sender: msg.sender})
     })
     socket.on("create", () => {
         console.log("creating new room")
