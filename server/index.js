@@ -40,6 +40,7 @@ io.on("connection", (socket) => {
         if(rooms.has(room)) {
             console.log("joining room " + room)
             socket.join(room)
+            io.to(room).emit("new_join", id)
             callback(true)
         } else {
             console.log(`room ${room} not found`)

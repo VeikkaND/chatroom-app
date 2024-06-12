@@ -9,6 +9,10 @@ function Room({socket, room}) {
         setMessages(messages.concat(msg))
     })
 
+    socket.on("new_join", (name) => {
+        setMessages(messages.concat({name: name}))
+    })
+
     const handleSend = (event) => {
         event.preventDefault()
         console.log(`room: ${room}`)
@@ -24,8 +28,11 @@ function Room({socket, room}) {
             <button type="submit">send</button>
             </form>
             <div>
-                {messages.map((msg) => 
-                    <MessageTemplate message={msg.message} sender={msg.sender} key={msg.message}/>)}
+                {messages.map((msg) => !msg.name 
+                ? <MessageTemplate message={msg.message} 
+                        sender={msg.sender}  key={msg.message}/>
+                : <p>** {msg.name} joined **</p>
+                )}
             </div>
         </div>
     )
