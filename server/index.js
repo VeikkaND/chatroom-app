@@ -26,8 +26,10 @@ io.on("connection", (socket) => {
     socket.on("message", (msg) => {
         console.log(`(${id}) message: ` + msg.message)
         console.log(msg.room)
+        const time = new Date()
         io.to(msg.room).emit("message", 
-            {room: msg.room, message: msg.message, sender: msg.sender})
+            {room: msg.room, message: msg.message, 
+                sender: msg.sender, time: time.toLocaleTimeString("en-GB")})
     })
     socket.on("create", () => {
         console.log("creating new room")

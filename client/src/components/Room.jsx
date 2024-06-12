@@ -45,12 +45,12 @@ function Room({socket, room}) {
             <div>
                 {messages.map((msg) => {
                     if(msg.joiner) {
-                        return <p>** {msg.joiner} joined **</p>
+                        return <p key={msg}>** {msg.joiner} joined **</p>
                     } else if (msg.leaver) {
-                        return <p>** {msg.leaver} left **</p>
+                        return <p key={msg}>** {msg.leaver} left **</p>
                     } else {
                         return <MessageTemplate message={msg.message} 
-                            sender={msg.sender}  key={msg.message}/>
+                            sender={msg.sender} time={msg.time} key={msg.time}/>
                     }
                 })}
             </div>
