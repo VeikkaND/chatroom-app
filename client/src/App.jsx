@@ -1,52 +1,43 @@
-import { io } from "socket.io-client"
-import { useState, useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux"
-import { set } from "./reducers/roomReducer"
-import Room from "./components/Room"
+import { useDispatch } from "react-redux"
+import { useContext } from "react"
+import SocketContext from "./utils/SocketContext"
+import { setRoom } from "./reducers/roomReducer"
+import { useNavigate } from "react-router-dom"
 
 function App() {
-  const [roomState, setRoomState] = useState(false)
-  const [socket, setSocket] = useState("")
-  useEffect(()=> {
-    setSocket(io("http://localhost:3000/"))
-  }, [])
+  const socket = useContext(SocketContext)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   
-  if(!roomState) {
-    const handleCreate = () => {
-      socket.emit("create")
-      dispatch(set(socket.id))
-      setRoomState(socket.id)
-    }
-
-    const handleSubmit = async (event) => {
-      event.preventDefault()
-      const room = event.target.code.value
-      const res = await socket.emitWithAck("join", room)
-      if(res) {
-        dispatch(set(room))
-        console.log(`joining room ${room}`)
-        setRoomState(room)
-      } else {
-        console.log(`room ${room} not found`)
-      }
-    }
-
-    return (
-      <div>
-        <button onClick={handleCreate}>create room</button>
-        <form onSubmit={handleSubmit}>
-          <input name="code"></input>
-          <button type="submit">join</button>
-        </form>
-      </div>
-    )
-  } else {
-    return (
-      <Room socket={socket} room={roomState}/>
-    )
+  const handleCreate = () => {
+    socket.emit("create")
+    dispatch(setRoom(socket.id))
+    console.log("redirecting")
+    navigate(`/${socket.id}`)
   }
-  
-}
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    const room = event.target.code.value
+    const res = await socket.emitWithAck("join", room)
+    if(res) {
+      dispatch(setRoom(room))
+      console.log(`joining room ${room}`)
+      navigate(`/${room}`)
+    } else {
+      console.log(`room ${room} not found`)
+    }
+  }
+
+  return (
+    <div>
+      <button onClick={handleCreate}>create room</button>
+      <form onSubmit={handleSubmit}>
+        <input name="code"></input>
+        <button type="submit">join</button>
+      </form>
+    </div>
+  )
+  } 
 
 export default App

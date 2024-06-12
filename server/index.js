@@ -25,7 +25,6 @@ io.on("connection", (socket) => {
     console.log("user connected: " + id)
     socket.on("message", (msg) => {
         console.log(`(${id}) message: ` + msg.message)
-        console.log(msg.room)
         const time = new Date()
         io.to(msg.room).emit("message", 
             {room: msg.room, message: msg.message, 
@@ -53,6 +52,11 @@ io.on("connection", (socket) => {
     socket.on("get_info", async (room) => {
         const members = await io.in(room).fetchSockets()
         io.to(id).emit("info", {members: members.length})
+    })
+    socket.on("leaving", async (room) => {
+        io.to(room).emit("leave", {name: id})
+        console.log("leaving " + room)
+        socket.leave(room)
     })
     socket.on("disconnecting", async () => {
         const roomIter = socket.rooms.values()

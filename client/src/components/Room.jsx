@@ -1,10 +1,17 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import Message from "../utils/Message"
 import MessageTemplate from "./Message" 
+import SocketContext from "../utils/SocketContext"
+import { useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
-function Room({socket, room}) {
+function Room() {
     const [messages, setMessages] = useState([])
     const [members, setMembers] = useState(1)
+    const socket = useContext(SocketContext)
+    const { room } = useParams() 
+    const navigate = useNavigate()
+
     useEffect(() => {
         socket.emit("get_info", room)
     }, [])
@@ -24,7 +31,7 @@ function Room({socket, room}) {
 
     socket.on("leave", (user) => {
         setMessages(messages.concat({leaver: user.name}))
-        setMembers(user.members)
+        setMembers(members - 1)
     })
 
     const handleSend = (event) => {
@@ -34,8 +41,14 @@ function Room({socket, room}) {
         socket.emit("message", msg)
     }
 
+    const handleBack = () => {
+        socket.emit("leaving", room)
+        navigate("/")
+    }
+
     return(
         <div>
+            <button onClick={handleBack}>back</button>
             <h2>{room}</h2>
             <p>{members} members</p>
             <form onSubmit={handleSend}>
