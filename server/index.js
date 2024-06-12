@@ -34,19 +34,31 @@ io.on("connection", (socket) => {
         socket.join(id)
         // TODO
     })
-    socket.on("join", (room, callback) => {
+    socket.on("join", async (room, callback) => {
         console.log("trying to join room " + room)
         const rooms = io.of("/").adapter.rooms
         if(rooms.has(room)) {
             console.log("joining room " + room)
             socket.join(room)
-            io.to(room).emit("new_join", id)
+            const members = await io.in(room).fetchSockets()
+            io.to(room).emit("new_join", {name: id, members: members.length})
             callback(true)
         } else {
             console.log(`room ${room} not found`)
             callback(false)
         }
-
+    })
+    socket.on("get_info", async (room) => {
+        const members = await io.in(room).fetchSockets()
+        io.to(id).emit("info", {members: members.length})
+    })
+    socket.on("disconnecting", async () => {
+        const roomIter = socket.rooms.values()
+        for(const room of roomIter) {
+            const members = await io.in(room).fetchSockets()
+            io.to(room).emit("leave", {name: id, members: members.length})
+        }
+        
     })
     socket.on("disconnect", () => {
         console.log("user disconnected: " + id)
