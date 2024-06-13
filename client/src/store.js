@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit"
-import roomReducer from "./reducers/roomReducer"
+import nameReducer from "./reducers/nameReducer"
 
 export default configureStore({
     reducer: {
-        room: roomReducer,
+        name: nameReducer,
     },
 })

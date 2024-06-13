@@ -22,6 +22,7 @@ app.get("/", (req, res) => {
 
 io.on("connection", (socket) => {
     const id = socket.id
+    var socketUsername = id
     console.log("user connected: " + id)
     socket.on("message", (msg) => {
         console.log(`(${id}) message: ` + msg.message)
@@ -30,19 +31,22 @@ io.on("connection", (socket) => {
             {room: msg.room, message: msg.message, 
                 sender: msg.sender, time: time.toLocaleTimeString("en-GB")})
     })
-    socket.on("create", () => {
+    socket.on("create", (name) => {
         console.log("creating new room")
         socket.join(id)
-        // TODO
+        socketUsername = name
     })
-    socket.on("join", async (room, callback) => {
+    socket.on("join", async (info, callback) => {
+        const room = info.room
+        socketUsername = info.name
         console.log("trying to join room " + room)
         const rooms = io.of("/").adapter.rooms
         if(rooms.has(room)) {
             console.log("joining room " + room)
             socket.join(room)
             const members = await io.in(room).fetchSockets()
-            io.to(room).emit("new_join", {name: id, members: members.length})
+            io.to(room).emit("new_join", 
+                {name: info.name, id: id, members: members.length})
             callback(true)
         } else {
             console.log(`room ${room} not found`)
@@ -53,8 +57,9 @@ io.on("connection", (socket) => {
         const members = await io.in(room).fetchSockets()
         io.to(id).emit("info", {members: members.length})
     })
-    socket.on("leaving", async (room) => {
-        io.to(room).emit("leave", {name: id})
+    socket.on("leaving", async (info) => {
+        const room = info.room
+        io.to(room).emit("leave", {name: info.name})
         console.log("leaving " + room)
         socket.leave(room)
     })
@@ -62,7 +67,7 @@ io.on("connection", (socket) => {
         const roomIter = socket.rooms.values()
         for(const room of roomIter) {
             const members = await io.in(room).fetchSockets()
-            io.to(room).emit("leave", {name: id, members: members.length})
+            io.to(room).emit("leave", {name: socketUsername, members: members.length})
         }
         
     })

@@ -4,10 +4,12 @@ import MessageTemplate from "./Message"
 import SocketContext from "../utils/SocketContext"
 import { useParams } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
+import { useSelector } from "react-redux"
 
 function Room() {
     const [messages, setMessages] = useState([])
     const [members, setMembers] = useState(1)
+    const username = useSelector((state) => state.name.value)
     const socket = useContext(SocketContext)
     const { room } = useParams() 
     const navigate = useNavigate()
@@ -36,13 +38,14 @@ function Room() {
 
     const handleSend = (event) => {
         event.preventDefault()
+        console.log("username: " + username)
         console.log(`room: ${room}`)
-        const msg = new Message(room, event.target.input.value, socket.id)
+        const msg = new Message(room, event.target.input.value, username)
         socket.emit("message", msg)
     }
 
     const handleBack = () => {
-        socket.emit("leaving", room)
+        socket.emit("leaving", {room: room, name: username})
         navigate("/")
     }
 
