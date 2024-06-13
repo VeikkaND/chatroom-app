@@ -4,10 +4,12 @@ function Message({message, sender, time}) {
 
 
     return(
-        <div>
-            <h5>{sender}:</h5>
-            <p>{message}</p>
-            {time}
+        <div className="message">
+            <h5 id="sender">{sender}:</h5>
+            <div id="bubble">
+                <p id="text">{message}</p>
+                <p id="timestamp">{time}</p>
+            </div>
         </div>
     )
 }

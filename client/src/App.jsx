@@ -1,11 +1,11 @@
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useContext, useState } from "react"
 import SocketContext from "./utils/SocketContext"
 import { setName } from "./reducers/nameReducer"
 import { useNavigate } from "react-router-dom"
 
 function App() {
-  const [username, setUsername] = useState(false)
+  const [username, setUsername] = useState(useSelector((state) => state.name.value))
   const socket = useContext(SocketContext)
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -20,7 +20,6 @@ function App() {
     const room = event.target.code.value
     const res = await socket.emitWithAck("join", {room: room, name: username})
     if(res) {
-      console.log(`joining room ${room}`)
       navigate(`/${room}`)
     } else {
       console.log(`room ${room} not found`)
@@ -35,21 +34,35 @@ function App() {
 
   if(!username) {
     return (
-      <div>
+      <div className="app">
         <form onSubmit={handleUsername}>
+          <h2>Username:</h2>
           <input name="username"></input>
+          <br />
           <button type="submit">enter</button>
         </form>
       </div>
     )
   } else {
     return (
-      <div>
-        <button onClick={handleCreate}>create room</button>
-        <form onSubmit={handleSubmit}>
-          <input name="code"></input>
-          <button type="submit">join</button>
-        </form>
+      <div className="app">
+        <h1>Hello {username}👋</h1>
+        <div id="options">
+          <div id="box">
+            <h2>Create a new room</h2>
+            <button onClick={handleCreate}>create room</button>
+          </div>
+          <div id="box"> 
+            <h2>Join an existing room</h2>
+            <form onSubmit={handleSubmit}>
+              <input name="code"></input>
+              <br />
+              <button type="submit">join</button>
+            </form>
+          </div>
+        </div>
+        
+        
       </div>
     )
   }

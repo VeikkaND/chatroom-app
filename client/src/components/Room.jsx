@@ -38,8 +38,6 @@ function Room() {
 
     const handleSend = (event) => {
         event.preventDefault()
-        console.log("username: " + username)
-        console.log(`room: ${room}`)
         const msg = new Message(room, event.target.input.value, username)
         socket.emit("message", msg)
     }
@@ -52,24 +50,30 @@ function Room() {
     return(
         <div>
             <button onClick={handleBack}>back</button>
-            <h2>{room}</h2>
+            <h2>room code: {room}</h2>
             <p>{members} members</p>
-            <form onSubmit={handleSend}>
-            <input name="input"></input>
-            <button type="submit">send</button>
-            </form>
             <div>
-                {messages.map((msg) => {
-                    if(msg.joiner) {
-                        return <p key={msg}>** {msg.joiner} joined **</p>
-                    } else if (msg.leaver) {
-                        return <p key={msg}>** {msg.leaver} left **</p>
-                    } else {
-                        return <MessageTemplate message={msg.message} 
-                            sender={msg.sender} time={msg.time} key={msg.time}/>
-                    }
-                })}
+                <div>
+                    {messages.map((msg) => {
+                        if(msg.joiner) {
+                            return <p key={msg}>** {msg.joiner} joined **</p>
+                        } else if (msg.leaver) {
+                            return <p key={msg}>** {msg.leaver} left **</p>
+                        } else {
+                            return <MessageTemplate message={msg.message} 
+                                sender={msg.sender} time={msg.time} key={msg.time}/>
+                        }
+                    })}
+                </div>
+                <div className="form">
+                    <form onSubmit={handleSend}>
+                        <input name="input"></input>
+                        <br />
+                        <button type="submit">send</button>
+                    </form>
+                </div>
             </div>
+            
         </div>
     )
 }

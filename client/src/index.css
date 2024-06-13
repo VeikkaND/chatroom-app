@@ -1,0 +1,80 @@
+/* https://colorhunt.co/palette/222831393e4600adb5eeeeee */
+
+body {
+    background: #222831;
+}
+
+h1 {
+    color: #EEEEEE;
+    font-family: Roboto;
+}
+
+h2 {
+    color: #EEEEEE;
+    font-family: Roboto;
+}
+
+h5 {
+    color: #EEEEEE;
+    font-family: Roboto;
+}
+
+p {
+    color: #EEEEEE;
+    font-family: Roboto;
+}
+
+input {
+    background-color: #EEEEEE;
+    margin-bottom: 15px;
+    font-family: Roboto;
+}
+
+button {
+    background-color: #EEEEEE;
+    font-family: Roboto;
+}
+
+.app {
+    margin: auto;
+    text-align: center;
+}
+
+.app #options {
+    display: flex;
+}
+
+.app #box {
+    margin-inline: auto;
+    width: fit-content;
+}
+
+.message {
+
+}
+
+.message #sender {
+    margin-bottom: 0px;
+    margin-left: 10px;
+}
+
+.message #bubble {
+    background-color: #00ADB5;
+    width: fit-content;
+    min-width: 20%;
+    max-width: 50%;
+    padding-inline: 10px;
+    padding-top: 5px;
+    overflow: visible;
+    border-radius: 15px;
+}
+
+.message #text {
+    margin-top: 0px;
+    text-align:left;
+}
+
+.message #timestamp {
+    font-size: 15px;
+    text-align: right;
+}
