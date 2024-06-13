@@ -48,32 +48,34 @@ function Room() {
     }
 
     return(
-        <div>
-            <button onClick={handleBack}>back</button>
-            <h2>room code: {room}</h2>
-            <p>{members} members</p>
-            <div>
-                <div>
-                    {messages.map((msg) => {
-                        if(msg.joiner) {
-                            return <p key={msg}>** {msg.joiner} joined **</p>
-                        } else if (msg.leaver) {
-                            return <p key={msg}>** {msg.leaver} left **</p>
-                        } else {
-                            return <MessageTemplate message={msg.message} 
-                                sender={msg.sender} time={msg.time} key={msg.time}/>
-                        }
-                    })}
-                </div>
-                <div className="form">
-                    <form onSubmit={handleSend}>
-                        <input name="input"></input>
-                        <br />
-                        <button type="submit">send</button>
-                    </form>
-                </div>
+        <div className="room">
+            <div className="info">
+                <button onClick={handleBack}>back</button>
+                <h2>room code: {room}</h2>
+                <p>{members} members</p>
             </div>
-            
+            <div className="chat">
+                {messages.map((msg) => {
+                    if(msg.joiner) {
+                        return <p key={msg} id="other">
+                            {msg.joiner} joined</p>
+                    } else if (msg.leaver) {
+                        return <p key={msg} id="other">
+                            {msg.leaver} left</p>
+                    } else {
+                        return <MessageTemplate message={msg.message} 
+                            sender={msg.sender} time={msg.time} key={msg.time}
+                            username={username}/>
+                    }
+                })}
+            </div>
+            <div className="form">
+                <form onSubmit={handleSend}>
+                    <textarea name="input" required></textarea>
+                    <br />
+                    <button type="submit">send</button>
+                </form>
+            </div>
         </div>
     )
 }

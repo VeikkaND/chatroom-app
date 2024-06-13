@@ -17,6 +17,7 @@ h2 {
 h5 {
     color: #EEEEEE;
     font-family: Roboto;
+    width: fit-content;
 }
 
 p {
@@ -49,32 +50,107 @@ button {
     width: fit-content;
 }
 
-.message {
+.room {
 
 }
 
-.message #sender {
+.room .info {
+
+}
+
+.room .form {
+    margin: auto;
+    width: fit-content;
+}
+
+.room .form form{
+    margin: auto;
+    text-align: center;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.room .form button {
+    padding-block: 8px;
+    border-radius: 5px;
+}
+
+.room .form textarea {
+    width: 50vw;
+    overflow: hidden;
+    resize: vertical;
+}
+
+.room .chat {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat #other {
+    margin: auto;
+    text-align: center;
+    background-color: #c0f0ff;
+    color: #222831;
+    padding-inline: 50px;
+    padding-block: 4px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.message_other{
+    align-self: flex-start;
+    width: fit-content;
+    min-width: 20%;
+    max-width: 50%;
+}
+
+.message_own{
+    align-self: flex-end;
+    width: fit-content;
+    min-width: 20%;
+    max-width: 50%;
+}
+
+.message_other #sender {
     margin-bottom: 0px;
     margin-left: 10px;
 }
 
-.message #bubble {
-    background-color: #00ADB5;
-    width: fit-content;
-    min-width: 20%;
-    max-width: 50%;
+.message_own #sender {
+    margin-bottom: 0px;
+    margin-left: 10px;
+}
+
+.message_other #bubble {
+    background-color: #EEEEEE;
     padding-inline: 10px;
     padding-top: 5px;
     overflow: visible;
+    overflow-wrap: break-word;
     border-radius: 15px;
 }
 
-.message #text {
-    margin-top: 0px;
-    text-align:left;
+.message_own #bubble {
+    background-color: #00ADB5;
+    padding-inline: 10px;
+    padding-top: 5px;
+    overflow: visible;
+    overflow-wrap: break-word;
+    border-radius: 15px;
+}
+.message_other #bubble p {
+    color: #222831;
 }
 
-.message #timestamp {
+#text {
+    margin-top: 0px;
+    text-align: left;
+    white-space: pre-line;
+}
+
+#timestamp {
     font-size: 15px;
     text-align: right;
 }
