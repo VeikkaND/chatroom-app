@@ -37,7 +37,7 @@ function App() {
       <div className="app">
         <form onSubmit={handleUsername}>
           <h2>Username:</h2>
-          <input name="username"></input>
+          <input name="username" autoComplete="off"></input>
           <br />
           <button type="submit">enter</button>
         </form>
@@ -55,7 +55,7 @@ function App() {
           <div id="box"> 
             <h2>Join an existing room</h2>
             <form onSubmit={handleSubmit}>
-              <input name="code"></input>
+              <input name="code" autoComplete="off"></input>
               <br />
               <button type="submit">join</button>
             </form>

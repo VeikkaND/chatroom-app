@@ -32,8 +32,15 @@ input {
 }
 
 button {
-    background-color: #EEEEEE;
+    background-color: #222831;
+    color: #EEEEEE;
     font-family: Roboto;
+    border: solid 1px #00ADB5;
+}
+
+button:hover {
+    transition-duration: 0.4s;
+    background-color: #393E46;
 }
 
 .app {
@@ -45,9 +52,33 @@ button {
     display: flex;
 }
 
-.app #box {
+.app button {
+    padding-block: 5px;
+    padding-inline: 15px;
+    border-radius: 5px;
+}
+
+#box {
     margin-inline: auto;
     width: fit-content;
+}
+
+#box input {
+    width: 250px;
+}
+
+input {
+    background-color: #222831;
+    color: #EEEEEE;
+    border: 1px solid #00ADB5;
+    border-radius: 5px;
+    padding-block: 5px;
+}
+
+input:focus {
+    transition-duration: 0.5s;
+    background-color: #393E46;
+    outline: none;
 }
 
 .room {
